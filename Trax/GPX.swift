@@ -22,7 +22,7 @@ class GPX: NSObject, NSXMLParserDelegate
     typealias GPXCompletionHandler = (GPX?) -> Void
     
     class func parse(url: NSURL, completionHandler: GPXCompletionHandler) {
-        //建造一個假initializer method 可以省略在其他文件中初始卻不知執行哪個method
+        
         GPX(url: url, completionHandler: completionHandler).parse()
     }
     

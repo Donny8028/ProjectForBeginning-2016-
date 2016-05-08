@@ -6,7 +6,7 @@
 //  Copyright © 2016年 Donny. All rights reserved.
 //
 
-import MapKit //mapKit got strikethrough is a XCODE7.3 bug waiting for fixing
+import MapKit 
 
 extension GPX.Waypoint:MKAnnotation {
     var coordinate:CLLocationCoordinate2D {

@@ -196,11 +196,13 @@ extension MKAnnotationView {
     }
     
     
+    
+    
 }
 
-//史丹佛版的demo 這裡的mapView(didSelected:) 這個function指定為 as GPX.Waypoint是因為只要在此mapView上的annotation都需要segue至大圖(EditableWaypoint 也是GPX.Waypoint的一種，之所以為兩個class是因為要編輯此annotation的title和subtitle與拍照(因此拍的照片segue至大圖適用於 as GPX.Waypoint
+//In stanford 193p, 這裡的mapView(didSelected:) 這個function指定為 as GPX.Waypoint是因為只要在此mapView上的annotation都需要segue至大圖(EditableWaypoint 也是GPX.Waypoint的一種，之所以為兩個class是因為要編輯此annotation的title和subtitle與拍照(因此拍的照片segue至大圖適用於 as GPX.Waypoint
 
-//所以GPX.Waypoint 對於可編輯與不可編輯的annotation都有效
+//GPX.Waypoint 對於可編輯與不可編輯的annotation都有效
 
 
 

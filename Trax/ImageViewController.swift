@@ -41,7 +41,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate{
     // do I need to set its frameSize? NO, just in callout accessory case needs.
     
     func getImage(){
-        if let url = imageURL {  // check it if nil
+        if let url = imageURL {  
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             let queue = dispatch_get_global_queue(qos, 0)
             dispatch_async(queue) {
