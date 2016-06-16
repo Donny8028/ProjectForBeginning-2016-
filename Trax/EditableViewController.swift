@@ -13,7 +13,7 @@ class EditableViewController: UIViewController , UITextFieldDelegate, UIImagePic
 {
 
     
-    var waypoint:GPX.Waypoint? {//need segue to first set this
+    var waypoint:GPX.Waypoint? {
         didSet{
             updateUI()
         }
@@ -55,10 +55,12 @@ class EditableViewController: UIViewController , UITextFieldDelegate, UIImagePic
         if image == nil {
             image = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
+
         imageView.image = image
+
         makeRoomForImage()
         saveImage()
-        dismissViewControllerAnimated(true, completion: nil) // it is the camera's presentingViewController
+        dismissViewControllerAnimated(true, completion: nil) // It is the camera's presentingViewController
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -72,7 +74,7 @@ class EditableViewController: UIViewController , UITextFieldDelegate, UIImagePic
                 if let docsDirectory = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
                     let uniqueName = NSDate.timeIntervalSinceReferenceDate()
                     let url = docsDirectory.URLByAppendingPathComponent("\(uniqueName).jpg") //this is absoluteURL
-                    let path = url.absoluteString // absoluteURL displays some symbol that we can't know, so turn it to absoulteString.
+                    let path = url.absoluteString // AbsoluteURL displays some symbol that we can't know, so turn it to absoulteString.
                     if imageData.writeToURL(url, atomically: true) {
                         waypoint?.links = [GPX.Link(href: path)]
                     }
@@ -147,13 +149,14 @@ extension EditableViewController {
                 let height = width / imageView.image!.aspectRatio
                     extraHeight = height - imageView.frame.height
                 imageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
-            
             }
         }else {
             extraHeight = -imageView.frame.height
             imageView.frame = CGRectZero
         }
-        preferredContentSize = CGSize(width: super.preferredContentSize.width, height: super.preferredContentSize.height + extraHeight) //super.preferredContentSize has not yet add the extraHeight when culculate the preferred size.
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: preferredContentSize.height + extraHeight)
+        //super.preferredContentSize has not yet add the extraHeight when culculate the preferred size.
+        //only for popover size
     }
 }
 extension UIImage {

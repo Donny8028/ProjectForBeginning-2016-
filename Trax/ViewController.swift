@@ -47,7 +47,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
     // MARK: - Configuring callout accessories
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if (control as? UIButton)?.buttonType == .DetailDisclosure {  // set the UIControl to the accessory you set
-            performSegueWithIdentifier(Constants.EditWayPointSegueIdentifier, sender: view) //this sender is the view do this segue, in this case is annotationView
+            performSegueWithIdentifier(Constants.EditWayPointSegueIdentifier, sender: view)
+            // This sender is the view do this segue, in this case is annotationView
             mapView.deselectAnnotation(view.annotation, animated: true)
         }else if (view.leftCalloutAccessoryView as? UIButton) != nil {
             performSegueWithIdentifier(Constants.ImageSegueIdentifier, sender: view)
@@ -60,7 +61,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
                 if let ewvc = segue.destinationViewController.contentViewController as? EditableViewController {
                     if let pop = ewvc.popoverPresentationController{
                         let coordinate = mapView.convertCoordinate(waypoint.coordinate, toPointToView: mapView)
-                        pop.sourceRect = (sender as! MKAnnotationView).popoverSourceRect(coordinate) // has checked above sender as annotationView
+                        pop.sourceRect = (sender as! MKAnnotationView).popoverSourceRect(coordinate)
+                        // It has checked above sender as annotationView
                         let minimunSize = ewvc.view.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
                         ewvc.preferredContentSize = CGSize(width: 320, height: minimunSize.height)
                         pop.delegate = self
@@ -84,7 +86,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
         return UIModalPresentationStyle.OverFullScreen
     }
     func presentationController(controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
-        let nvc = UINavigationController(rootViewController: controller.presentedViewController) //needs to specify the root VC, otherwise, it will return a new navigationVC
+        let nvc = UINavigationController(rootViewController: controller.presentedViewController)
+        // Needs to specify the root VC, otherwise, it will return a new navigationVC
         let visualBackground = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
         visualBackground.frame = nvc.view.frame
         nvc.view.insertSubview(visualBackground, atIndex: 0)
@@ -106,19 +109,19 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
     // MARK: - AnnotationView
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         var view = mapView.dequeueReusableAnnotationViewWithIdentifier(Constants.ReusableAnnotation)
-        if view == nil {        //there's no outlay in storyboard
+        if view == nil {        // There's no outlay in storyboard
             view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: Constants.ReusableAnnotation)
         }
         view?.annotation = annotation
         view?.canShowCallout = true
-// view?.draggable = annotation is GPX.Waypoint // the demo is present " annotation is EdibleWaypoint
+        //view?.draggable = annotation is GPX.Waypoint // the demo is present " annotation is EdibleWaypoint
         view?.rightCalloutAccessoryView = nil
         view?.leftCalloutAccessoryView = nil
         if annotation is GPX.Waypoint {
             view?.draggable = true
             view?.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
-//            view?.leftCalloutAccessoryView = UIButton(frame: Constants.ImageFrame)
-//            //must specify the size in this case
+            //view?.leftCalloutAccessoryView = UIButton(frame: Constants.ImageFrame)
+            //must specify the size in this case
             
         }
         
@@ -151,14 +154,17 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
     }
     
     func clearWaypoints() {
-        if mapView?.annotations != nil { //must add "?" , the system could be sent nil to it
+        if mapView?.annotations != nil {
+            //Must add "?" , the system could be sent nil to it
         mapView.removeAnnotations(mapView.annotations as [MKAnnotation])
         }
     }
     
-    func handleWaypoints(waypoints:[GPX.Waypoint]) { // the GPX.Waypoint is not an annotation, because it does not conform to MKAnnotation protocol to be it
+    func handleWaypoints(waypoints:[GPX.Waypoint]) {
+        // The GPX.Waypoint is not an annotation, because it does not conform to MKAnnotation protocol to be it
         mapView.addAnnotations(waypoints)
-        mapView.showAnnotations(waypoints, animated: true)  //show annotation automatically
+        mapView.showAnnotations(waypoints, animated: true)
+        //Show annotation automatically
     }
     
     
@@ -167,8 +173,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentation
         let center = NSNotificationCenter.defaultCenter()
         let appDelegate = UIApplication.sharedApplication().delegate
         center.addObserverForName(GPXURL.NotificationName, object: appDelegate, queue: NSOperationQueue.mainQueue()) { (notification) in
-            //this observer will always exist until you remove it from the center
-            if let url = notification.userInfo?[GPXURL.Key] as? NSURL { //userInfo is a optional dictionary type, so it have to mark ? before call key
+            // This observer will always exist until you remove it from the center
+            if let url = notification.userInfo?[GPXURL.Key] as? NSURL {
+                // UserInfo is a optional dictionary type, so it have to mark ? before call key
                 self.gpxURL = url
             }
         }
@@ -194,10 +201,6 @@ extension MKAnnotationView {
         popoverOrigin.y -= frame.height/2 - centerOffset.y - calloutOffset.y
         return CGRect(origin: popoverOrigin, size: frame.size)
     }
-    
-    
-    
-    
 }
 
 //In stanford 193p, 這裡的mapView(didSelected:) 這個function指定為 as GPX.Waypoint是因為只要在此mapView上的annotation都需要segue至大圖(EditableWaypoint 也是GPX.Waypoint的一種，之所以為兩個class是因為要編輯此annotation的title和subtitle與拍照(因此拍的照片segue至大圖適用於 as GPX.Waypoint
